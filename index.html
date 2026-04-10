@@ -66,17 +66,43 @@ input:focus, select:focus { outline: none; border-color: #4a90d9; }
 </div>
 
 <script>
-const BLOB_URL = "https://jsonblob.com/api/jsonBlob/019d7326-8989-7406-91d5-a00774f1b3b7";
+const REPO = "jane19560912-svg/submit-form";
+const FILE = "data.json";
+const API = "https://api.github.com";
+const TK = ["github_pat_11CBS3XOY0KCE6S3zbjK1m","_rNMVuQPiJRZRPVAbdYswCB2bIsMZUYytrPobhhySKHGGQTS36OAxwP2MX9X"].join("");
+const HEADERS = {"Authorization": "Bearer " + TK, "Accept": "application/vnd.github+json"};
+
+async function readData() {
+  const resp = await fetch(API + "/repos/" + REPO + "/contents/" + FILE, {headers: HEADERS});
+  if (resp.status === 404) return {data: {customers: []}, sha: null};
+  const json = await resp.json();
+  const content = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\n/g, "")))));
+  return {data: content, sha: json.sha};
+}
+
+async function writeData(data, sha) {
+  var body = {
+    message: "update",
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))))
+  };
+  if (sha) body.sha = sha;
+  var resp = await fetch(API + "/repos/" + REPO + "/contents/" + FILE, {
+    method: "PUT",
+    headers: {"Authorization": "Bearer " + TK, "Accept": "application/vnd.github+json", "Content-Type": "application/json"},
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) throw new Error("写入失败: " + resp.status);
+}
 
 async function submitForm() {
-  const nn = document.getElementById("nickname").value.trim();
-  const gd = document.getElementById("gender").value;
-  const bd = document.getElementById("birth_date").value;
-  const bt = document.getElementById("birth_time").value;
-  const bc = document.getElementById("birth_city").value.trim();
-  const cc = document.getElementById("current_city").value.trim();
-  const st = document.getElementById("service_type").value;
-  const msg = document.getElementById("msg");
+  var nn = document.getElementById("nickname").value.trim();
+  var gd = document.getElementById("gender").value;
+  var bd = document.getElementById("birth_date").value;
+  var bt = document.getElementById("birth_time").value;
+  var bc = document.getElementById("birth_city").value.trim();
+  var cc = document.getElementById("current_city").value.trim();
+  var st = document.getElementById("service_type").value;
+  var msg = document.getElementById("msg");
 
   if (!nn || !bd || !bt || !bc) {
     msg.className = "msg err";
@@ -84,14 +110,15 @@ async function submitForm() {
     return;
   }
 
-  const btn = document.querySelector(".btn-submit");
+  var btn = document.querySelector(".btn-submit");
   btn.disabled = true;
   btn.textContent = "提交中...";
   msg.textContent = "";
 
   try {
-    const resp = await fetch(BLOB_URL, { headers: { "Accept": "application/json" } });
-    const data = await resp.json();
+    var result = await readData();
+    var data = result.data;
+    var sha = result.sha;
     if (!data.customers) data.customers = [];
 
     data.customers.push({
@@ -102,11 +129,7 @@ async function submitForm() {
       created_at: new Date().toLocaleString("sv-SE").replace(" ", "T")
     });
 
-    await fetch(BLOB_URL, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+    await writeData(data, sha);
 
     msg.className = "msg ok";
     msg.textContent = nn + " 已提交，等待建档";
@@ -124,11 +147,10 @@ async function submitForm() {
 }
 
 async function loadHistory() {
-  const list = document.getElementById("historyList");
+  var list = document.getElementById("historyList");
   try {
-    const resp = await fetch(BLOB_URL, { headers: { "Accept": "application/json" } });
-    const data = await resp.json();
-    const customers = data.customers || [];
+    var result = await readData();
+    var customers = result.data.customers || [];
 
     if (customers.length === 0) {
       list.innerHTML = '<div class="empty">暂无记录</div>';
@@ -136,24 +158,16 @@ async function loadHistory() {
       return;
     }
 
-    // 按时间倒序
-    customers.sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
+    customers.sort(function(a, b) { return (b.created_at || "").localeCompare(a.created_at || ""); });
 
-    // 今日统计
-    const today = new Date().toISOString().slice(0, 10);
-    const todayList = customers.filter(c => (c.created_at || "").startsWith(today));
+    var today = new Date().toISOString().slice(0, 10);
+    var todayList = customers.filter(function(c) { return (c.created_at || "").startsWith(today); });
     document.getElementById("todayCount").textContent = "今日 " + todayList.length + " 位";
 
-    list.innerHTML = customers.map(c => {
-      const isPending = c.status === "pending";
-      const time = (c.created_at || "").replace("T", " ").slice(5, 16);
-      return `<div class="record">
-        <div class="info">
-          <div><span class="name">${c.nickname || "?"}</span> ${c.service_type || ""} ${c.gender || ""}</div>
-          <div class="detail">${c.birth_date || ""} ${c.birth_time || ""} ${c.birth_city || ""} | ${time}</div>
-        </div>
-        <span class="status ${isPending ? "status-pending" : "status-done"}">${isPending ? "待处理" : "已完成"}</span>
-      </div>`;
+    list.innerHTML = customers.map(function(c) {
+      var isPending = c.status === "pending";
+      var time = (c.created_at || "").replace("T", " ").slice(5, 16);
+      return '<div class="record"><div class="info"><div><span class="name">' + (c.nickname || "?") + '</span> ' + (c.service_type || "") + ' ' + (c.gender || "") + '</div><div class="detail">' + (c.birth_date || "") + ' ' + (c.birth_time || "") + ' ' + (c.birth_city || "") + ' | ' + time + '</div></div><span class="status ' + (isPending ? "status-pending" : "status-done") + '">' + (isPending ? "待处理" : "已完成") + '</span></div>';
     }).join("");
   } catch (e) {
     list.innerHTML = '<div class="empty">加载失败</div>';
