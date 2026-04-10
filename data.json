@@ -1,16 +1,3 @@
 {
-  "customers": [
-    {
-      "id": "c_1775840588440_1",
-      "nickname": "青木概率1",
-      "gender": "女",
-      "birth_date": "1992-08-09",
-      "birth_time": "12:02",
-      "birth_city": "重庆",
-      "current_city": "重庆",
-      "service_type": "生时矫正",
-      "status": "pending",
-      "created_at": "2026-04-11T01:03:08"
-    }
-  ]
+  "customers": []
 }
