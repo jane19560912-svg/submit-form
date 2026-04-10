@@ -75,8 +75,8 @@ input:focus, select:focus { outline: none; border-color: #4a90d9; }
   <div id="msg" class="msg"></div>
 </div>
 
-<div class="history" id="historyBox" style="display:none">
-  <h3>审核列表 <span class="count" id="todayCount"></span> <button class="refresh-btn" onclick="loadHistory()">刷新</button></h3>
+<div class="history" id="historyBox">
+  <h3>提交记录 <span class="count" id="todayCount"></span> <button class="refresh-btn" onclick="loadHistory()">刷新</button></h3>
   <div id="historyList"><div class="empty">加载中...</div></div>
 </div>
 
@@ -86,7 +86,7 @@ var FILE = "data.json";
 var APIURL = "https://api.github.com";
 var TK = ["github_pat_11CBS3XOY0KCE6S3zbjK1m","_rNMVuQPiJRZRPVAbdYswCB2bIsMZUYytrPobhhySKHGGQTS36OAxwP2MX9X"].join("");
 var HEADERS = {"Authorization": "Bearer " + TK, "Accept": "application/vnd.github+json"};
-var IS_ADMIN = location.search.indexOf("admin") > -1;
+var IS_ADMIN = false;
 
 async function readData() {
   var resp = await fetch(APIURL + "/repos/" + REPO + "/contents/" + FILE, {headers: HEADERS});
@@ -132,17 +132,17 @@ async function submitForm() {
       id: "c_" + Date.now() + "_" + data.customers.length,
       nickname: nn, gender: gd, birth_date: bd, birth_time: bt,
       birth_city: bc, current_city: cc || bc,
-      service_type: st, status: "review",
+      service_type: st, status: "pending",
       created_at: new Date().toLocaleString("sv-SE").replace(" ", "T")
     });
 
     await writeData(data, result.sha);
     msg.className = "msg ok";
-    msg.textContent = nn + " 已提交，等待审核";
+    msg.textContent = nn + " 已提交，等待建档";
     document.getElementById("nickname").value = "";
     document.getElementById("birth_city").value = "";
     document.getElementById("current_city").value = "";
-    if (IS_ADMIN) loadHistory();
+    loadHistory();
   } catch (e) {
     msg.className = "msg err";
     msg.textContent = "提交失败: " + e.message;
@@ -179,7 +179,7 @@ async function loadHistory() {
     var customers = result.data.customers || [];
     customers.sort(function(a, b) { return (b.created_at || "").localeCompare(a.created_at || ""); });
 
-    var fiveDaysAgo = new Date(Date.now() - 5 * 86400000).toISOString().slice(0, 10);
+    var fiveDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
     customers = customers.filter(function(c) { return (c.created_at || "") >= fiveDaysAgo; });
 
     if (customers.length === 0) { list.innerHTML = '<div class="empty">暂无记录</div>'; document.getElementById("todayCount").textContent = ""; return; }
@@ -192,14 +192,11 @@ async function loadHistory() {
 
     list.innerHTML = customers.map(function(c) {
       var st = c.status || "";
-      var statusClass = st === "review" ? "status-review" : (st === "pending" ? "status-pending" : "status-done");
-      var statusText = st === "review" ? "待审核" : (st === "pending" ? "已通过" : "已完成");
+      var statusClass = st === "pending" ? "status-pending" : "status-done";
+      var statusText = st === "pending" ? "待处理" : "已完成";
       var time = (c.created_at || "").replace("T", " ").slice(5, 16);
       var typeName = SERVICE_NAMES[c.service_type] || c.service_type || "";
       var actions = "";
-      if (st === "review") {
-        actions = '<div class="admin-actions"><button class="btn-approve" onclick="approveCustomer(\'' + c.id + '\')">通过</button><button class="btn-reject" onclick="rejectCustomer(\'' + c.id + '\')">删除</button></div>';
-      }
       return '<div class="record"><div class="info"><div><span class="name">' + (c.nickname || "?") + '</span> ' + typeName + ' ' + (c.gender || "") + '</div><div class="detail">' + (c.birth_date || "") + ' ' + (c.birth_time || "") + ' ' + (c.birth_city || "") + ' | ' + time + '</div></div><div style="display:flex;align-items:center"><span class="status ' + statusClass + '">' + statusText + '</span>' + actions + '</div></div>';
     }).join("");
   } catch (e) {
@@ -207,10 +204,7 @@ async function loadHistory() {
   }
 }
 
-if (IS_ADMIN) {
-  document.getElementById("historyBox").style.display = "block";
-  loadHistory();
-}
+loadHistory();
 </script>
 </body>
 </html>
