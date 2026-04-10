@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>客户建档提交</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 20px; }
+.form-box { max-width: 420px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+h2 { text-align: center; margin-bottom: 20px; font-size: 18px; }
+label { display: block; font-size: 14px; color: #333; margin-bottom: 4px; margin-top: 14px; }
+input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
+input:focus, select:focus { outline: none; border-color: #4a90d9; }
+.btn-submit { width: 100%; margin-top: 20px; padding: 12px; background: #4a90d9; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+.btn-submit:active { background: #3a7bc8; }
+.btn-submit:disabled { background: #ccc; }
+.msg { text-align: center; margin-top: 12px; font-size: 14px; }
+.ok { color: #52c41a; }
+.err { color: #f5222d; }
+.history { max-width: 420px; margin: 20px auto 0; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.history h3 { font-size: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.history h3 .count { font-size: 13px; color: #888; font-weight: normal; }
+.record { padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+.record:last-child { border-bottom: none; }
+.record .info { color: #333; }
+.record .info .name { font-weight: 600; }
+.record .info .detail { color: #888; font-size: 12px; margin-top: 2px; }
+.record .status { font-size: 12px; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.status-pending { background: #fff7e6; color: #d48806; }
+.status-done { background: #f6ffed; color: #52c41a; }
+.empty { text-align: center; color: #ccc; padding: 20px; font-size: 14px; }
+.refresh-btn { background: none; border: 1px solid #ddd; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #666; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="form-box">
+  <h2>客户建档提交</h2>
+  <label>昵称 *</label>
+  <input id="nickname" placeholder="客户昵称">
+  <label>性别 *</label>
+  <select id="gender"><option value="女">女</option><option value="男">男</option></select>
+  <label>出生日期 *</label>
+  <input id="birth_date" type="date">
+  <label>出生时间 *</label>
+  <input id="birth_time" type="time">
+  <label>出生城市 *</label>
+  <input id="birth_city" placeholder="如：浙江杭州">
+  <label>现居城市</label>
+  <input id="current_city" placeholder="如：上海">
+  <label>服务类型</label>
+  <select id="service_type">
+    <option value="499天赋">499天赋</option>
+    <option value="499工作">499工作</option>
+    <option value="499情感">499情感</option>
+    <option value="799天赋">799天赋</option>
+    <option value="1980">1980</option>
+  </select>
+  <button class="btn-submit" onclick="submitForm()">提交</button>
+  <div id="msg" class="msg"></div>
+</div>
+
+<div class="history">
+  <h3>提交记录 <span class="count" id="todayCount"></span> <button class="refresh-btn" onclick="loadHistory()">刷新</button></h3>
+  <div id="historyList"><div class="empty">加载中...</div></div>
+</div>
+
+<script>
+const BLOB_URL = "https://jsonblob.com/api/jsonBlob/019d7326-8989-7406-91d5-a00774f1b3b7";
+
+async function submitForm() {
+  const nn = document.getElementById("nickname").value.trim();
+  const gd = document.getElementById("gender").value;
+  const bd = document.getElementById("birth_date").value;
+  const bt = document.getElementById("birth_time").value;
+  const bc = document.getElementById("birth_city").value.trim();
+  const cc = document.getElementById("current_city").value.trim();
+  const st = document.getElementById("service_type").value;
+  const msg = document.getElementById("msg");
+
+  if (!nn || !bd || !bt || !bc) {
+    msg.className = "msg err";
+    msg.textContent = "请填写必填项（昵称、出生日期、时间、城市）";
+    return;
+  }
+
+  const btn = document.querySelector(".btn-submit");
+  btn.disabled = true;
+  btn.textContent = "提交中...";
+  msg.textContent = "";
+
+  try {
+    const resp = await fetch(BLOB_URL, { headers: { "Accept": "application/json" } });
+    const data = await resp.json();
+    if (!data.customers) data.customers = [];
+
+    data.customers.push({
+      id: "c_" + Date.now() + "_" + data.customers.length,
+      nickname: nn, gender: gd, birth_date: bd, birth_time: bt,
+      birth_city: bc, current_city: cc || bc,
+      service_type: st, status: "pending",
+      created_at: new Date().toLocaleString("sv-SE").replace(" ", "T")
+    });
+
+    await fetch(BLOB_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    msg.className = "msg ok";
+    msg.textContent = nn + " 已提交，等待建档";
+    document.getElementById("nickname").value = "";
+    document.getElementById("birth_city").value = "";
+    document.getElementById("current_city").value = "";
+    loadHistory();
+  } catch (e) {
+    msg.className = "msg err";
+    msg.textContent = "提交失败: " + e.message;
+  }
+
+  btn.disabled = false;
+  btn.textContent = "提交";
+}
+
+async function loadHistory() {
+  const list = document.getElementById("historyList");
+  try {
+    const resp = await fetch(BLOB_URL, { headers: { "Accept": "application/json" } });
+    const data = await resp.json();
+    const customers = data.customers || [];
+
+    if (customers.length === 0) {
+      list.innerHTML = '<div class="empty">暂无记录</div>';
+      document.getElementById("todayCount").textContent = "";
+      return;
+    }
+
+    // 按时间倒序
+    customers.sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
+
+    // 今日统计
+    const today = new Date().toISOString().slice(0, 10);
+    const todayList = customers.filter(c => (c.created_at || "").startsWith(today));
+    document.getElementById("todayCount").textContent = "今日 " + todayList.length + " 位";
+
+    list.innerHTML = customers.map(c => {
+      const isPending = c.status === "pending";
+      const time = (c.created_at || "").replace("T", " ").slice(5, 16);
+      return `<div class="record">
+        <div class="info">
+          <div><span class="name">${c.nickname || "?"}</span> ${c.service_type || ""} ${c.gender || ""}</div>
+          <div class="detail">${c.birth_date || ""} ${c.birth_time || ""} ${c.birth_city || ""} | ${time}</div>
+        </div>
+        <span class="status ${isPending ? "status-pending" : "status-done"}">${isPending ? "待处理" : "已完成"}</span>
+      </div>`;
+    }).join("");
+  } catch (e) {
+    list.innerHTML = '<div class="empty">加载失败</div>';
+  }
+}
+
+loadHistory();
+</script>
+</body>
+</html>
