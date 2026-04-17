@@ -35,6 +35,18 @@
       "service_type": "499天赋",
       "status": "pending",
       "created_at": "2026-04-17T23:54:56"
+    },
+    {
+      "id": "c_1776441438104_3",
+      "nickname": "星星雨",
+      "gender": "女",
+      "birth_date": "2002-12-20",
+      "birth_time": "20:30",
+      "birth_city": "福建省龙岩市武平区",
+      "current_city": "福建省厦门市集美区",
+      "service_type": "499情绪",
+      "status": "pending",
+      "created_at": "2026-04-17T23:57:18"
     }
   ]
 }
