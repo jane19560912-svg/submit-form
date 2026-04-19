@@ -71,6 +71,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-04-19T09:23:28"
+    },
+    {
+      "id": "c_1776580961086_6",
+      "nickname": "凛昼",
+      "gender": "女",
+      "birth_date": "2006-12-13",
+      "birth_time": "14:30",
+      "birth_city": "贵州省遵义市",
+      "current_city": "新加坡",
+      "service_type": "499天赋",
+      "status": "pending",
+      "created_at": "2026-04-19T14:42:41"
     }
   ]
 }
