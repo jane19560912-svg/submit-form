@@ -143,6 +143,18 @@
       "service_type": "499天赋",
       "status": "pending",
       "created_at": "2026-04-24T20:42:52"
+    },
+    {
+      "id": "c_1777095613527_12",
+      "nickname": "X",
+      "gender": "女",
+      "birth_date": "2000-06-23",
+      "birth_time": "07:30",
+      "birth_city": "宁夏回族自治区吴忠市",
+      "current_city": "西藏自治区林芝市",
+      "service_type": "499天赋",
+      "status": "pending",
+      "created_at": "2026-04-25T13:40:13"
     }
   ]
 }
