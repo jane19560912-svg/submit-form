@@ -261,7 +261,7 @@
       "birth_city": "湖北省仙桃市",
       "current_city": "浙江省余姚市",
       "service_type": "499工作",
-      "status": "done",
+      "status": "pending",
       "created_at": "2026-05-02T17:32:31"
     },
     {
@@ -273,7 +273,7 @@
       "birth_city": "黑龙江省海林市",
       "current_city": "海南省三亚市",
       "service_type": "499天赋",
-      "status": "archived",
+      "status": "pending",
       "created_at": "2026-05-02T19:13:35"
     },
     {
