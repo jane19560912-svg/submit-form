@@ -570,6 +570,26 @@
         "birth_time": "07:30",
         "birth_city": "安徽省阜阳市"
       }
+    },
+    {
+      "id": "c_1779878047222_47",
+      "nickname": "陈丽娜",
+      "gender": "女",
+      "birth_date": "1992-02-02",
+      "birth_time": "17:17",
+      "birth_city": "安徽省阜阳市",
+      "current_city": "浙江省宁波市",
+      "service_type": "2280合盘",
+      "status": "pending",
+      "created_at": "2026-05-27T18:34:07",
+      "person2": {
+        "nickname": "陈倩倩",
+        "gender": "女",
+        "birth_date": "1993-07-04",
+        "birth_time": "07:30",
+        "birth_city": "安徽省阜阳市",
+        "current_city": "浙江省宁波市"
+      }
     }
   ]
 }
