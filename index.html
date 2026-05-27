@@ -81,6 +81,8 @@ input:focus, select:focus { outline: none; border-color: #4a90d9; }
     <input id="birth_time2" type="time">
     <label>出生城市 *</label>
     <input id="birth_city2" placeholder="如：浙江杭州">
+    <label>现居城市</label>
+    <input id="current_city2" placeholder="如：上海">
   </div>
   <button class="btn-submit" onclick="submitForm()">提交</button>
   <script>document.getElementById("service_type").addEventListener("change", function(){
@@ -139,13 +141,14 @@ async function submitForm() {
 
   // 合盘需要验证第二个人信息
   var isHP = st === "2280合盘";
-  var nn2 = "", gd2 = "", bd2 = "", bt2 = "", bc2 = "";
+  var nn2 = "", gd2 = "", bd2 = "", bt2 = "", bc2 = "", cc2 = "";
   if (isHP) {
     nn2 = document.getElementById("nickname2").value.trim();
     gd2 = document.getElementById("gender2").value;
     bd2 = document.getElementById("birth_date2").value;
     bt2 = document.getElementById("birth_time2").value;
     bc2 = document.getElementById("birth_city2").value.trim();
+    cc2 = document.getElementById("current_city2").value.trim();
     if (!nn2 || !bd2 || !bt2 || !bc2) { msg.className = "msg err"; msg.textContent = "合盘需填写第二个人的完整信息"; return; }
   }
 
@@ -168,7 +171,7 @@ async function submitForm() {
     // 合盘：附带第二个人信息
     if (isHP) {
       record.person2 = {
-        nickname: nn2, gender: gd2, birth_date: bd2, birth_time: bt2, birth_city: bc2
+        nickname: nn2, gender: gd2, birth_date: bd2, birth_time: bt2, birth_city: bc2, current_city: cc2 || bc2
       };
     }
 
