@@ -10,6 +10,8 @@ body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 20p
 .form-box { max-width: 420px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
 h2 { text-align: center; margin-bottom: 20px; font-size: 18px; }
 label { display: block; font-size: 14px; color: #333; margin-bottom: 4px; margin-top: 14px; }
+.person2-section { display: none; margin-top: 16px; padding: 16px; background: #f9f0ff; border-radius: 8px; border: 1px solid #d9b8ff; }
+.person2-section h3 { font-size: 15px; color: #722ed1; margin-bottom: 8px; }
 input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
 input:focus, select:focus { outline: none; border-color: #4a90d9; }
 .btn-submit { width: 100%; margin-top: 20px; padding: 12px; background: #4a90d9; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
@@ -67,10 +69,25 @@ input:focus, select:focus { outline: none; border-color: #4a90d9; }
     <option value="2280合盘">行运合盘</option>
     <option value="生时矫正">生时矫正</option>
   </select>
+  <div class="person2-section" id="person2Section">
+    <h3>第二个人（合盘对象）</h3>
+    <label>昵称 *</label>
+    <input id="nickname2" placeholder="对方昵称">
+    <label>性别 *</label>
+    <select id="gender2"><option value="女">女</option><option value="男">男</option></select>
+    <label>出生日期 *</label>
+    <input id="birth_date2" type="date">
+    <label>出生时间 *</label>
+    <input id="birth_time2" type="time">
+    <label>出生城市 *</label>
+    <input id="birth_city2" placeholder="如：浙江杭州">
+  </div>
   <button class="btn-submit" onclick="submitForm()">提交</button>
   <script>document.getElementById("service_type").addEventListener("change", function(){
     var isJZ = this.value === "生时矫正";
-    document.querySelectorAll("label").forEach(function(l){ if(l.textContent.indexOf("出生时间")>-1) l.textContent = isJZ ? "出生时间（可不填）" : "出生时间 *"; });
+    var isHP = this.value === "2280合盘";
+    document.querySelectorAll("label").forEach(function(l){ if(l.textContent.indexOf("出生时间")>-1 && !l.closest(".person2-section")) l.textContent = isJZ ? "出生时间（可不填）" : "出生时间 *"; });
+    document.getElementById("person2Section").style.display = isHP ? "block" : "none";
   });</script>
   <div id="msg" class="msg"></div>
 </div>
@@ -120,6 +137,18 @@ async function submitForm() {
   if (!nn || !bd || !bc) { msg.className = "msg err"; msg.textContent = "请填写必填项（昵称、出生日期、城市）"; return; }
   if (!bt && st !== "生时矫正") { msg.className = "msg err"; msg.textContent = "请填写出生时间"; return; }
 
+  // 合盘需要验证第二个人信息
+  var isHP = st === "2280合盘";
+  var nn2 = "", gd2 = "", bd2 = "", bt2 = "", bc2 = "";
+  if (isHP) {
+    nn2 = document.getElementById("nickname2").value.trim();
+    gd2 = document.getElementById("gender2").value;
+    bd2 = document.getElementById("birth_date2").value;
+    bt2 = document.getElementById("birth_time2").value;
+    bc2 = document.getElementById("birth_city2").value.trim();
+    if (!nn2 || !bd2 || !bt2 || !bc2) { msg.className = "msg err"; msg.textContent = "合盘需填写第二个人的完整信息"; return; }
+  }
+
   var btn = document.querySelector(".btn-submit");
   btn.disabled = true; btn.textContent = "提交中..."; msg.textContent = "";
 
@@ -128,20 +157,35 @@ async function submitForm() {
     var data = result.data;
     if (!data.customers) data.customers = [];
 
-    data.customers.push({
+    var record = {
       id: "c_" + Date.now() + "_" + data.customers.length,
       nickname: nn, gender: gd, birth_date: bd, birth_time: bt,
       birth_city: bc, current_city: cc || bc,
       service_type: st, status: "pending",
       created_at: new Date().toLocaleString("sv-SE").replace(" ", "T")
-    });
+    };
+
+    // 合盘：附带第二个人信息
+    if (isHP) {
+      record.person2 = {
+        nickname: nn2, gender: gd2, birth_date: bd2, birth_time: bt2, birth_city: bc2
+      };
+    }
+
+    data.customers.push(record);
 
     await writeData(data, result.sha);
     msg.className = "msg ok";
-    msg.textContent = nn + " 已提交，等待建档";
+    msg.textContent = nn + (isHP ? " & " + nn2 : "") + " 已提交，等待建档";
     document.getElementById("nickname").value = "";
     document.getElementById("birth_city").value = "";
     document.getElementById("current_city").value = "";
+    if (isHP) {
+      document.getElementById("nickname2").value = "";
+      document.getElementById("birth_date2").value = "";
+      document.getElementById("birth_time2").value = "";
+      document.getElementById("birth_city2").value = "";
+    }
     loadHistory();
   } catch (e) {
     msg.className = "msg err";
@@ -197,7 +241,9 @@ async function loadHistory() {
       var time = (c.created_at || "").replace("T", " ").slice(5, 16);
       var typeName = SERVICE_NAMES[c.service_type] || c.service_type || "";
       var actions = "";
-      return '<div class="record"><div class="info"><div><span class="name">' + (c.nickname || "?") + '</span> ' + typeName + ' ' + (c.gender || "") + '</div><div class="detail">' + (c.birth_date || "") + ' ' + (c.birth_time || "") + ' ' + (c.birth_city || "") + ' | ' + time + '</div></div><div style="display:flex;align-items:center"><span class="status ' + statusClass + '">' + statusText + '</span>' + actions + '</div></div>';
+      var nameDisplay = c.nickname || "?";
+      if (c.person2 && c.person2.nickname) nameDisplay += " & " + c.person2.nickname;
+      return '<div class="record"><div class="info"><div><span class="name">' + nameDisplay + '</span> ' + typeName + ' ' + (c.gender || "") + '</div><div class="detail">' + (c.birth_date || "") + ' ' + (c.birth_time || "") + ' ' + (c.birth_city || "") + ' | ' + time + '</div></div><div style="display:flex;align-items:center"><span class="status ' + statusClass + '">' + statusText + '</span>' + actions + '</div></div>';
     }).join("");
   } catch (e) {
     list.innerHTML = '<div class="empty">加载失败</div>';
