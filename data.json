@@ -742,6 +742,18 @@
       "service_type": "1980",
       "status": "done",
       "created_at": "2026-06-03T17:49:39"
+    },
+    {
+      "id": "c_1780490160565_60",
+      "nickname": "氧气店",
+      "gender": "女",
+      "birth_date": "1997-04-14",
+      "birth_time": "09:20",
+      "birth_city": "江苏省镇江市",
+      "current_city": "江苏省南京市",
+      "service_type": "499工作",
+      "status": "pending",
+      "created_at": "2026-06-03T20:36:00"
     }
   ]
 }
