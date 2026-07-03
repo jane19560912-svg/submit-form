@@ -1386,6 +1386,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-07-03T14:36:13"
+    },
+    {
+      "id": "c_1783063059087_111",
+      "nickname": "Rita",
+      "gender": "女",
+      "birth_date": "2000-09-11",
+      "birth_time": "12:31",
+      "birth_city": "广东省深圳市罗湖区",
+      "current_city": "广东省深圳市福田区",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-07-03T15:17:39"
     }
   ]
 }
