@@ -1754,6 +1754,18 @@
       "service_type": "499天赋",
       "status": "pending",
       "created_at": "2026-07-14T19:24:27"
+    },
+    {
+      "id": "c_1784028322193_141",
+      "nickname": "ZHIYI",
+      "gender": "女",
+      "birth_date": "1991-07-21",
+      "birth_time": "22:45",
+      "birth_city": "重庆市",
+      "current_city": "四川省成都市",
+      "service_type": "499天赋",
+      "status": "pending",
+      "created_at": "2026-07-14T19:25:22"
     }
   ]
 }
