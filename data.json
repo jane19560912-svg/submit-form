@@ -2006,6 +2006,18 @@
         "birth_city": "安徽省六安市",
         "current_city": "安徽省合肥市"
       }
+    },
+    {
+      "id": "c_1784646746188_160",
+      "nickname": "课程案例",
+      "gender": "女",
+      "birth_date": "1997-06-21",
+      "birth_time": "12:05",
+      "birth_city": "贵州贵阳",
+      "current_city": "深圳",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-07-21T23:12:26"
     }
   ]
 }
