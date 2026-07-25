@@ -2462,6 +2462,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-07-25T18:32:11"
+    },
+    {
+      "id": "c_1784975626816_198",
+      "nickname": "第2课食伤生财案例",
+      "gender": "女",
+      "birth_date": "1993-11-15",
+      "birth_time": "15:00",
+      "birth_city": "北京市",
+      "current_city": "北京市",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-07-25T18:33:46"
     }
   ]
 }
