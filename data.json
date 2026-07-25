@@ -2414,6 +2414,18 @@
       "service_type": "1980",
       "status": "archived",
       "created_at": "2026-07-24T20:41:13"
+    },
+    {
+      "id": "c_1784974560860_194",
+      "nickname": "第4课巴菲特",
+      "gender": "男",
+      "birth_date": "1930-08-30",
+      "birth_time": "21:00",
+      "birth_city": "北京市",
+      "current_city": "北京市",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-07-25T18:16:00"
     }
   ]
 }
