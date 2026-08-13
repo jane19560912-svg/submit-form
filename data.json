@@ -2582,6 +2582,18 @@
       "service_type": "1980",
       "status": "done",
       "created_at": "2026-08-13T01:12:13"
+    },
+    {
+      "id": "c_1786626645842_208",
+      "nickname": "Rita Shao",
+      "gender": "女",
+      "birth_date": "2000-09-18",
+      "birth_time": "19:08",
+      "birth_city": "江苏省常州市",
+      "current_city": "美国纽约",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-08-13T21:10:45"
     }
   ]
 }
