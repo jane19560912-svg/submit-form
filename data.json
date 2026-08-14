@@ -2930,6 +2930,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-08-14T22:16:54"
+    },
+    {
+      "id": "c_1786717070683_237",
+      "nickname": "八字课泡泡",
+      "gender": "女",
+      "birth_date": "1996-07-15",
+      "birth_time": "06:00",
+      "birth_city": "云南昆明",
+      "current_city": "云南昆明",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-08-14T22:17:50"
     }
   ]
 }
