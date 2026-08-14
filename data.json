@@ -2966,6 +2966,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-08-14T22:20:27"
+    },
+    {
+      "id": "c_1786717293221_240",
+      "nickname": "八字课王雪",
+      "gender": "女",
+      "birth_date": "1997-07-24",
+      "birth_time": "19:02",
+      "birth_city": "湖北武汉",
+      "current_city": "湖北武汉",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-08-14T22:21:33"
     }
   ]
 }
