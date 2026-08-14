@@ -2954,6 +2954,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-08-14T22:19:03"
+    },
+    {
+      "id": "c_1786717227819_239",
+      "nickname": "八字课孙月",
+      "gender": "女",
+      "birth_date": "1996-02-24",
+      "birth_time": "21:15",
+      "birth_city": "江苏盐城",
+      "current_city": "江苏盐城",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-08-14T22:20:27"
     }
   ]
 }
