@@ -2894,6 +2894,18 @@
       "service_type": "1980",
       "status": "pending",
       "created_at": "2026-08-14T22:11:09"
+    },
+    {
+      "id": "c_1786716748125_234",
+      "nickname": "八字课阿芷",
+      "gender": "女",
+      "birth_date": "1996-04-03",
+      "birth_time": "16:00",
+      "birth_city": "浙江绍兴",
+      "current_city": "浙江绍兴",
+      "service_type": "1980",
+      "status": "pending",
+      "created_at": "2026-08-14T22:12:28"
     }
   ]
 }
