@@ -66,6 +66,7 @@ input:focus, select:focus { outline: none; border-color: #4a90d9; }
     <option value="499情绪">体验情绪</option>
     <option value="799天赋">体验天赋Plus</option>
     <option value="1980">行运正式版</option>
+    <option value="3980八字课">八字课学员（3980）</option>
     <option value="2280合盘">行运合盘</option>
     <option value="生时矫正">生时矫正</option>
   </select>
@@ -235,7 +236,7 @@ async function loadHistory() {
     var todayList = customers.filter(function(c) { return (c.created_at || "").startsWith(today); });
     document.getElementById("todayCount").textContent = "今日 " + todayList.length + " 位";
 
-    var SERVICE_NAMES = {"499天赋":"体验天赋","499工作":"体验工作","499情感":"体验情感","499正缘":"体验正缘","499桃花":"体验桃花","499情绪":"体验情绪","799天赋":"体验天赋Plus","1980":"行运正式版","2280合盘":"行运合盘","生时矫正":"生时矫正"};
+    var SERVICE_NAMES = {"499天赋":"体验天赋","499工作":"体验工作","499情感":"体验情感","499正缘":"体验正缘","499桃花":"体验桃花","499情绪":"体验情绪","799天赋":"体验天赋Plus","1980":"行运正式版","3980八字课":"八字课学员（3980）","2280合盘":"行运合盘","生时矫正":"生时矫正"};
 
     list.innerHTML = customers.map(function(c) {
       var st = c.status || "";
