@@ -3122,6 +3122,18 @@
       "service_type": "3980八字课",
       "status": "pending",
       "created_at": "2026-08-20T20:02:18"
+    },
+    {
+      "id": "c_1787288639798_253",
+      "nickname": "八字课彭棱琪正确版",
+      "gender": "女",
+      "birth_date": "1996-09-01",
+      "birth_time": "00:38",
+      "birth_city": "四川宜宾",
+      "current_city": "四川宜宾",
+      "service_type": "3980八字课",
+      "status": "pending",
+      "created_at": "2026-08-21T13:03:59"
     }
   ]
 }
