@@ -3166,6 +3166,26 @@
         "birth_city": "新疆维吾尔自治区喀什市",
         "current_city": "新疆维吾尔自治区哈密市伊吾县"
       }
+    },
+    {
+      "id": "c_1787545564157_256",
+      "nickname": "色米拉",
+      "gender": "女",
+      "birth_date": "1994-08-09",
+      "birth_time": "11:00",
+      "birth_city": "新疆维吾尔自治区喀什市",
+      "current_city": "新疆维吾尔自治区哈密市伊吾县淖毛湖镇",
+      "service_type": "2280合盘",
+      "status": "pending",
+      "created_at": "2026-08-24T12:26:04",
+      "person2": {
+        "nickname": "色米拉配偶",
+        "gender": "男",
+        "birth_date": "1997-03-03",
+        "birth_time": "02:30",
+        "birth_city": "新疆维吾尔自治区喀什市",
+        "current_city": "新疆维吾尔自治区哈密市伊吾县"
+      }
     }
   ]
 }
