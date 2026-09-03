@@ -21,7 +21,7 @@
       "birth_city": "江苏省徐州市",
       "current_city": "江苏省徐州市",
       "service_type": "1980",
-      "status": "done",
+      "status": "archived",
       "created_at": "2026-09-01T08:25:43"
     },
     {
@@ -33,7 +33,7 @@
       "birth_city": "河南省新密市",
       "current_city": "河南省郑州市",
       "service_type": "2280合盘",
-      "status": "pending",
+      "status": "archived",
       "created_at": "2026-09-01T14:43:09",
       "person2": {
         "nickname": "李秉恒",
